@@ -1,0 +1,52 @@
+#include <iostream>
+#include <cmath>
+#include <bits/stdc++.h>
+#include <chrono>
+#include <ctime>
+using namespace std;
+using namespace std::chrono;
+auto start = high_resolution_clock::now();
+int PlaylistSearchx3(string PlaylistA[], int startofplaylist, int endofplaylist, string song) //Creates an int-based PlaylistSearchx3 that contains a string based array named playlist, the start of the playlist, the end of the playlist, and a string called song.
+{
+    if(endofplaylist - startofplaylist > 0){ //if the end of the playlist - the beginning of the playlist is more than 0
+        int midFirst = startofplaylist + (endofplaylist - startofplaylist) /3; //1st midpoint is the end of the playlist - the start of the playlist + the start of the playlist
+        int midSecond = midFirst + (endofplaylist - startofplaylist) /3; //2nd midpoint is the end of the playlist - the start of the playlist + midFirst
+        
+        if (PlaylistA[midFirst] == song) { //if midFirst's (the first midpoint) location is the song,
+            return midFirst; //return back the song
+        }
+        if (PlaylistA[midSecond] == song) { //if midSecond (the second midpoint) is the song
+            return midSecond; //Also return the song
+        }
+        if (song < PlaylistA[midFirst]) { //if the song is less than midFirst's location
+            return PlaylistSearchx3 (PlaylistA, startofplaylist, midFirst, song) ; //Search midFirst's section for the song and return the song if it's there.
+        }
+        if (song > PlaylistA[midSecond]) { //if the song is more than midSecond's location.
+            return PlaylistSearchx3(PlaylistA, midSecond + 1, endofplaylist, song); //Search midSecond's section for the song and return the song if it's there.
+        }
+        return PlaylistSearchx3 (PlaylistA, midFirst, + midSecond, song); //then search the midsection for the song and play it if it is there.
+    } else { //Otherwise
+        return -1; //The song doesn't exist.
+    }
+    
+    
+}
+
+int main()
+{
+    string PlaylistA[]= {"alive", "awake", "dead", "demons", "lostmymind"}; //PlaylistA contains the songs alive, awake, dead, demons, and lostmymind.
+    int startofplaylist = 0; //The start of the playlist is set to position 0.
+    int endofplaylist = sizeof(PlaylistA)/ sizeof(PlaylistA[0]); //The end of the playlist is set to the size of the playlist divided by playlistA at the 0 location.
+    string song = "dead"; // the song that one would search for.
+    int x; //The location of the song
+    if ((x = PlaylistSearchx3(PlaylistA, startofplaylist, endofplaylist, song)) ==-1) { //if the program returns the value -1,
+        cout << "Song doesn't exist in playlist" << endl; //then the song doesn't exist in the playlist, so one would state that the "Song doesn't exist in the playlist" as in this line of code.
+    } else {
+        cout << "The index of the song " << song << " in the playlist is " << x << endl; //Tells the song, the index of the song, and ends the line in the format The position of the ____ in the playlist is _____
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start); //Calculates the duration it took to call the function by subtracting start from stop. //4 steps.
+    cout << "Time taken by function: " //Prints the words Time taken by function
+         << duration.count() << " microseconds" << endl; //Prints the duration count and the word microseconds
+         return 0;
+}
+}
