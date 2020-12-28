@@ -1,0 +1,54 @@
+#include <iostream> //includes the iostream in the program
+#include <bits/stdc++.h> //adds bits/stdc++.h
+#include <ctime>
+#include <chrono> //Allows for the use of the internal timer
+using namespace std; //Tells the system to use std
+using namespace std::chrono; //Tells the system to use std::chrono;
+auto start = high_resolution_clock::now(); //Starts the high resolution clock
+void swap(int *xp, int *yp)   //Sets up the swap. 2 steps
+{  
+    int temp = *xp; //Defines the integer temp as xp. 2 steps 
+    *xp = *yp;  //Defines xp as yp via pointer. 2 steps
+    *yp = temp;  //Sets yp equal to temp via pointer. The function will run left to right, 2 steps
+}  //8 steps total
+  
+// A function to implement bubble sort  
+void bubbleSort(int arr[], int n)  //implements the bubbleSort in C++. 2 steps
+{  
+    int i, size;  //initializes i and size. 2 steps.
+    for (i = 0; i < n-1; i++) //Creates a for loop for i and n, most specifically for i. 3 steps. Directly related to size 3n
+      
+    // Last i elements are already in place  
+    for (size = 0; size < n-i-1; size++)  //Sets size to 0. If size is less than n-i, size will increase. 3 steps.
+        if (arr[size] < arr[size+1])  //if arr[]size< arr[size+1]. Begins the swap. 2 steps.
+            swap(&arr[size], &arr[size+1]); //Tells the system to swap if arr[size] is smaller than arr[size+1] 2 steps. This reverses the array in this function. This code assumes that the normal is arr[size]>arr[size+1]
+}  
+  
+/* Function to print an array */
+void printArray(int arr[], int size) //tells the function what to base the value of the numbers in the array on. 2 steps.
+{  
+    int i;  //creates the value i, where i is the position of the pointer in the array //2 steps
+    for (i = 0; i < size; i++)  //// i is the position of the pointer in the algorithm. As long as i is less than size it will print all the numbers in the array. //3 steps
+        cout << arr[i] << " ";  //Outputs the value of i. 2 steps
+    cout << endl;  //Prints the array with spaces in between the numbers in order to avoid confusion. 1 step
+}  
+  
+// Driver code  
+int main()  
+{  
+    const unsigned int size=15; //Defines the size of the array arr[size]. 2 steps
+    int arr[size];  //The array to be analyzed. 
+    for (int x = 0; x < size; x++) //Tells the system to run through the array. 3 steps
+    {
+        arr[x]= rand() %100000; //randomizes all numbers in the array. Randomizes the numbers in the array. // 2 steps
+    }
+    int n = sizeof(arr)/sizeof(arr[0]);  //Defines the integer n as sizeof(arr)/sizeof(arr0) //3 steps
+    bubbleSort(arr, n);  //Processes the bubble sort. 2 steps.
+    cout<<"Sorted array: \n";  //Prints the words Sorted array //1 step
+    printArray(arr, n);  //Prints the array.
+    auto stop = high_resolution_clock::now(); //Stops the timer. 2 steps
+    auto duration = duration_cast<microseconds>(stop - start); //Calculates the duration it took to call the function by subtracting start from stop. //4 steps.
+    cout << "Time taken by function: " //Prints the words Time taken by function. 1 step
+         << duration.count() << " microseconds" << endl; //Prints the duration count and the word microseconds //3 steps
+    return 0;  //Exits the program
+}
