@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+
+//Compiler version g++ 6.3.0
+
+int main(){ //initiates main function
+long int fib1=0; // Sets fib1 to 0
+long int fib2=1; // Sets fib2 to 1
+
+
+  for(long int i=0; i<89; i++){// Creates for loop for i. 
+    
+   long int fib3 = fib2 + fib1; //fib3 is fib2 + fib1
+    fib2 = fib1; //fib2 is set equal to fib1
+    fib1 = fib3;//fib1 is set equal to fib3
+   long int fib4 = fib3 * 2; // Multiplies fib3 by 2 to get fib4
+    cout << i+1 <<"." <<" " << fib3 << " " << fib4 <<" \n";//C outs the function based on the info given.
+  }
+    cout << "Rebuilt Fibonacci!\n The code processes the fibbonaci sequence but stops at 89 iterations.";
+}
