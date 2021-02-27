@@ -1,0 +1,127 @@
+#include <bits/stdc++.h> //Include bits/stdc++.h in the program.
+using namespace std;  //Allows for one to not have to type std before various operations in the program.
+  
+#define UNASSIGNED 0  //Defines UNASSIGNED as 0.
+  
+#define N 9  //Defines N as the number 9.
+  
+bool FindUnassignedLocation(int grid[N][N],  
+                            int &row, int &col);  //Bool function that finds unassigned locations of the 2-d array grid, using the integer row, and the integer column. The values for row and column will change as this function changes.
+  
+// Checks whether it will be legal  
+// to assign num to the given row, col  
+bool isSafe(int grid[N][N], int row, 
+                   int col, int num);  //Creates a function that uses the grid, row, column, and integer num variable to check if it is safe to place the number in the unassigned location.
+  
+/* Takes a partially filled-in grid and attempts  
+to assign values to all unassigned locations in  
+such a way to meet the requirements for 
+Sudoku solution (non-duplication across rows, 
+columns, and boxes) */
+bool SolveSudoku(int grid[N][N])  //Creates a bool function called SolveSudoku that will attempt to fill in the unassigned locations to meet the requirements of the sudoku solution.
+{  
+    int row, col;  //Creates integers row and column in the spectrum of the function.
+  
+    if (!FindUnassignedLocation(grid, row, col))  //If the unassigned location is non-zero.
+    return true; //Returns a true value.
+//If there isn’t an unassigned location then the program will move to the next location in the grid.
+  
+//Otherwise
+    for (int num = 1; num <= 9; num++)  //the function runs all nums 1 <9
+    { 
+        if (isSafe(grid, row, col, num))  //If the function is safe based on the grid row and column.
+        {  
+            grid[row][col] = num;  //That section of the grid is set equal to that number.
+  
+            // return, if success, yay!  
+            if (SolveSudoku(grid))  //If solve sudoku comes back successful
+                return true;  /the function returns true.
+  
+            // failure, unmake & try again  
+            grid[row][col] = UNASSIGNED;  //Otherwise the grid number will be UNASSIGNED and the function will try again,
+        }  
+    }  
+    return false; //returns false, and backtracks
+}  
+  
+
+bool FindUnassignedLocation(int grid[N][N],  
+                            int &row, int &col)  //Creates a bool function for FindUnassignedLocation using array integer grid[9][9], integer row, and int column. The values assigned to row and column will change based on the function.
+{  
+    for (row = 0; row < N; row++)  //Row is equal to 0, if row is less than N, then row increases.
+        for (col = 0; col < N; col++)  //Column is equal to 0, if row is less than N, then the column increases.
+            if (grid[row][col] == UNASSIGNED) //If grid[row][col] is equal to UNASSIGNED.  
+                return true;  //Return true.
+    return false;  //Otherwise return false.
+}  
+  
+/* Returns a boolean which indicates whether  
+an assigned entry in the specified row matches 
+the given number. */
+bool UsedInRow(int grid[N][N], int row, int num)  //Creates a bool function called UsedInRow using 2-d array grid[N][N], integer row, and integer num.
+{  
+    for (int col = 0; col < N; col++)  //integer column is equal to 0, if column is less than N, column is increasing.
+        if (grid[row][col] == num)  //If grid[row][col] is equal to num,
+            return true;  //the function returns true,
+    return false;  //otherwise it returns false.
+}  
+bool UsedInCol(int grid[N][N], int col, int num)  //Creates a boolean function called UsedInCol using integer 2-D array grid[N][N], integer col, and integer num.
+{  
+    for (int row = 0; row < N; row++)  //Integer row is 0, if row is less than N, row increases.
+        if (grid[row][col] == num)  //if grid[row][col] is equal to num.
+            return true;  //return true
+    return false;  //Otherwise return false.
+}  
+bool UsedInBox(int grid[N][N], int boxStartRow, 
+               int boxStartCol, int num)  //Creates a boolean function called UsedInBox using integer 2-D array [N][N], integer boxStartRow, integer boxStartCol, and int num.
+{  
+    for (int row = 0; row < 3; row++)  //Row is equal to 0, if row is less than 3, row increases.
+        for (int col = 0; col < 3; col++)  //Col is equal to 0, if col is less than 3, col increases.
+            if (grid[row + boxStartRow]
+                    [col + boxStartCol] == num) if grid[row+boxStartRow][col+boxStartCol] equals num,  
+                return true;  //the function returns true.
+    return false;  //Otherwise it returns false.
+}  
+  
+bool isSafe(int grid[N][N], int row,  
+                   int col, int num)  //Creates a boolean function called isSafe using integer 2-D array grid[N][N], integer row, integer col, and int num.
+{  
+    /* Check if 'num' is not already placed in  
+    current row, current column and current 3x3 box */
+    return !UsedInRow(grid, row, num) && //Returns not UsedInRow, using grid, row, and num,  
+           !UsedInCol(grid, col, num) &&  //not UsedInCol, using grid, col, and num.
+           !UsedInBox(grid, row - row % 3 , 
+                      col - col % 3, num) &&   //not UsedInBox, using grid, row-row’s remainder when divided by 3, col - col’s remainder when divided by 3, and num.
+            grid[row][col] == UNASSIGNED;  //grid[row][col] is equal to UNASSIGNED.
+}  
+  
+/* A utility function to print grid */
+void printGrid(int grid[N][N])  
+{  
+    for (int row = 0; row < N; row++)  // integer row is equal to 0, row is less than N, row is increasing.
+    {  
+    for (int col = 0; col < N; col++)  //integer column is equal to 0, col is less than N, col is increasing.
+            cout << grid[row][col] << " ";  //Prints grid[row][col] with a space.
+        cout << endl; //ends the line.
+    }  
+}  
+  
+// Driver Code 
+int main()  //Starts main.
+{   
+    int grid[N][N] = {{3, 0, 6, 5, 0, 8, 4, 0, 0},  
+                      {5, 2, 0, 0, 0, 0, 0, 0, 0},  
+                      {0, 8, 7, 0, 0, 0, 0, 3, 1},  
+                      {0, 0, 3, 0, 1, 0, 0, 8, 0},  
+                      {9, 0, 0, 8, 6, 3, 0, 0, 5},  
+                      {0, 5, 0, 0, 9, 0, 6, 0, 0},  
+                      {1, 3, 0, 0, 0, 0, 2, 5, 0},  
+                      {0, 0, 0, 0, 0, 0, 0, 7, 4},  
+                      {0, 0, 5, 2, 0, 6, 3, 0, 0}};  //creates a 2-D array called grid[N][N], which is the Sudoku Grid.
+    if (SolveSudoku(grid) == true) //if SolveSudoku(grid) is true,  
+        printGrid(grid);  //it prints the grid.
+    else //otherwise,
+        cout << "No solution exists";  //it prints No solution exists.
+  
+    return 0;  //Ends the program.
+}
